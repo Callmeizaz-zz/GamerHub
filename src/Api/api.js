@@ -52,3 +52,9 @@ export const searchedGamesURL = (game_name) =>
 //GET ALL POPULAR GAMES
 export const allPopularGamesURL = (page) =>
   `${base_url}games?dates=${LastYear},${CurrentDate}&ordering=-rating&page=${page}&page_size=36`;
+//GET ALL UPCOMING GAMES
+export const allUpcomingURL = (page) =>
+  `${base_url}games?dates=${CurrentDate},${NextYear}&ordering=-added&page=${page}&page_size=36`;
+//GET ALL RELEASED GAMES
+export const allReleasedGames = (page) =>
+  `${base_url}games?dates=${LastYear},${CurrentDate}&ordering=-released&page=${page}&page_size=36`;

@@ -5,17 +5,17 @@ import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { Button } from "../Styles/SharedStyles";
 //REDUX and ROUTER
 import {
-  AllPopularGame,
+  allUpcomingGames,
   NextPage,
   PrevPage,
-} from "../Actions/popularGameActions";
+} from "../Actions/upcomingGameAction";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useHistory } from "react-router-dom";
 //COMPONENTS
 import Game from "./games";
 import GameDetail from "./gameDetail";
 
-const PopularGames = ({ match }) => {
+const UpcomingGames = () => {
   //GETTNG PATH
   const Location = useLocation();
   const History = useHistory();
@@ -23,8 +23,8 @@ const PopularGames = ({ match }) => {
   const Ref = useRef(true);
 
   //Redux store
-  const { allPopularGame, gameCount, currentPage, gameLoading } = useSelector(
-    (state) => state.popular
+  const { upcomingGames, gameCount, currentPage, isGameLoading } = useSelector(
+    (state) => state.upcoming
   );
   //No of pages
   const totalPage = Math.ceil(gameCount / 36);
@@ -40,17 +40,16 @@ const PopularGames = ({ match }) => {
       return;
     } else {
       dispatch(PrevPage());
-      History.push(`/popular/games?page=${currentPage - 1}`);
+      History.push(`/upcoming/games?page=${currentPage - 1}`);
     }
   };
 
   const NextHandler = () => {
     if (currentPage >= totalPage) {
-      console.log("Hello");
       return;
     } else {
       dispatch(NextPage());
-      History.push(`/popular/games?page=${currentPage + 1}`);
+      History.push(`/upcoming/games?page=${currentPage + 1}`);
     }
   };
   //Fetch all popular games
@@ -61,7 +60,7 @@ const PopularGames = ({ match }) => {
       Ref.current = false;
     } else {
       async function fetchGames(page) {
-        const games = dispatch(AllPopularGame(page));
+        const games = dispatch(allUpcomingGames(page));
         return games;
       }
 
@@ -72,28 +71,28 @@ const PopularGames = ({ match }) => {
   // {`${currentPage} /popular/games/${popularGames.id}`}
   return (
     <Popular>
-      <h2>Popular Games </h2>
+      <h2>Upcoming Games </h2>
       <p>Total results: {gameCount}</p>
       <AnimateSharedLayout type="crossfade">
         <AnimatePresence>
           {pathId && <GameDetail pathId={pathId} curPage={currentPage} />}
         </AnimatePresence>
-        {gameLoading ? (
+        {isGameLoading ? (
           <h2>Loading</h2>
         ) : (
           <Games>
-            {allPopularGame.map((popularGames) => (
+            {upcomingGames.map((upcomingGames) => (
               <Link
-                to={`/popular/games/${currentPage}/${popularGames.id}`}
-                key={popularGames.id}
+                to={`/upcoming/games/${currentPage}/${upcomingGames.id}`}
+                key={upcomingGames.id}
               >
                 <Game
-                  name={popularGames.name}
-                  img={popularGames.background_image}
-                  rating={popularGames.rating}
-                  id={popularGames.id}
-                  key={popularGames.id}
-                  released={popularGames.released}
+                  name={upcomingGames.name}
+                  img={upcomingGames.background_image}
+                  rating={upcomingGames.rating}
+                  id={upcomingGames.id}
+                  key={upcomingGames.id}
+                  released={upcomingGames.released}
                 />
               </Link>
             ))}
@@ -143,4 +142,4 @@ const Page = styled(motion.div)`
   }
 `;
 
-export default PopularGames;
+export default UpcomingGames;

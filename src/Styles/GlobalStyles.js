@@ -23,7 +23,7 @@ body{
  }
  a{
      text-decoration:none;
-     color:#333;
+     color:#fff;
  }
  img{
      display:block;

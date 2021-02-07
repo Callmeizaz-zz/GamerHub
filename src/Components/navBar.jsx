@@ -1,74 +1,99 @@
-import React, { useState } from "react";
+import React from "react";
 //Styled and animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-//ROUTER AND REDUX
+//REDUX
 import { useDispatch, useSelector } from "react-redux";
-import { searchGames, searchInputVal } from "../Actions/gameActions";
-import { ResetPage } from "../Actions/popularGameActions";
-import { resetState } from "../Actions/gameDetailAction";
+import { AllPopularGame } from "../Actions/popularGameActions";
+import { allUpcomingGames } from "../Actions/upcomingGameAction";
+import { AllReleasedGames } from "../Actions/releasedGameAction";
 //Router
-import { useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
+//COMPONENTS
+import SearchGame from "../Components/searchGame";
 
 const Nav = () => {
   //Redux selector
   const { currentPage } = useSelector((state) => state.popular);
 
-  //STATES
-
-  const [searchInput, setSearchInput] = useState("");
-
   const dispatch = useDispatch();
   const History = useHistory();
-
-  //HANDLERS
-  const SearchHandler = (e) => {
-    setSearchInput(e.target.value);
-  };
-
-  const SubmitHandler = (e) => {
-    e.preventDefault();
-    dispatch(resetState());
-    dispatch(searchGames(searchInput));
-    dispatch(searchInputVal(searchInput));
-    History.push(`/search?=${searchInput}`);
-    setSearchInput("");
-  };
+  const { pathname } = useLocation();
 
   //PAGE HANDLER
-  const resetPageHandler = () => {
-    dispatch(ResetPage());
+  const popularPageHandler = () => {
+    dispatch(AllPopularGame(1));
+    History.push(`/popular/games?page=${currentPage}`);
+  };
+  const upcomingPageHandler = () => {
+    dispatch(allUpcomingGames(1));
+    History.push(`/upcoming/games?page=${currentPage}`);
+  };
+  const releasedPageHandler = () => {
+    dispatch(AllReleasedGames(1));
+    History.push(`/upcoming/games?page=${currentPage}`);
   };
   return (
     <NavBar>
-      <Searched>
-        <form action="">
-          <input
-            onChange={SearchHandler}
-            type="text"
-            value={searchInput}
-            placeholder="Search Games"
-          />
-          <button onClick={SubmitHandler}>Search</button>
-        </form>
-      </Searched>
+      <SearchGame />
       <Ul>
-        <Link to="">
-          <li> Home</li>
-        </Link>
-        <Link
-          onClick={resetPageHandler}
-          to={`/popular/games?page=${currentPage}`}
-        >
-          <li> Popular</li>
-        </Link>
-        <Link to="">
-          <li> Upcoming</li>
-        </Link>
-        <Link to="">
-          <li> Released</li>
-        </Link>
+        <li>
+          <Link to="/">Home</Link>
+          <Line
+            transition={{ duration: 0.75 }}
+            initial={{ width: "0%" }}
+            animate={{ width: pathname === "/" ? "60%" : "0%" }}
+            exit={{ duration: 0.4 }}
+          />
+        </li>
+        <li>
+          <Link
+            onClick={() => {
+              popularPageHandler();
+            }}
+            to={`/popular/games?page=${currentPage}`}
+          >
+            Popular
+          </Link>
+          <Line
+            transition={{ duration: 0.75 }}
+            initial={{ width: "0%" }}
+            animate={{ width: pathname === "/popular/games" ? "60%" : "0%" }}
+            exit={{ duration: 0.4 }}
+          />
+        </li>
+        <li>
+          <Link
+            onClick={() => {
+              upcomingPageHandler();
+            }}
+            to={`/upcoming/games?page=${currentPage}`}
+          >
+            Upcoming
+          </Link>
+          <Line
+            transition={{ duration: 0.75 }}
+            initial={{ width: "0%" }}
+            animate={{ width: pathname === "/upcoming/games" ? "60%" : "0%" }}
+            exit={{ duration: 0.4 }}
+          />
+        </li>
+        <li>
+          <Link
+            onClick={() => {
+              releasedPageHandler();
+            }}
+            to={`/released/games?page=${currentPage}`}
+          >
+            Released
+          </Link>
+          <Line
+            transition={{ duration: 0.75 }}
+            initial={{ width: "0%" }}
+            animate={{ width: pathname === "/released/games" ? "60%" : "0%" }}
+            exit={{ duration: 0.4 }}
+          />
+        </li>
       </Ul>
     </NavBar>
   );
@@ -84,35 +109,10 @@ const NavBar = styled(motion.nav)`
   background: #333;
   li {
     color: #fff;
+    position: relative;
   }
 `;
-const Searched = styled(motion.div)`
-  display: inline-flex;
-  padding: 1rem 5rem;
-  text-align: center;
-  input {
-    font-size: 1.5rem;
-    padding: 0.2rem 0.4rem;
-    border: none;
-    box-shadow: 0px 0px 30px rgba(83, 82, 82, 0.3);
-    border-radius: 1rem;
-    outline: none;
-    &:focus {
-      outline: none;
-    }
-  }
-  button {
-    border: none;
-    padding: 0.2rem 0.4rem;
-    margin: 0rem 0.5rem;
-    font-size: 1.5rem;
-    border-radius: 1rem;
-    background-color: #fff;
-    &:focus {
-      outline: none;
-    }
-  }
-`;
+
 const Ul = styled(motion.ul)`
   display: flex;
   justify-content: space-evenly;
@@ -122,5 +122,13 @@ const Ul = styled(motion.ul)`
     padding: 1rem;
   }
 `;
-
+const Line = styled(motion.div)`
+  background: tomato;
+  width: 0%;
+  height: 0.3rem;
+  position: absolute;
+  left: 10%;
+  top: 75%;
+  margin-left: 8px;
+`;
 export default Nav;

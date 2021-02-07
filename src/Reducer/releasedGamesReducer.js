@@ -1,21 +1,21 @@
 const initState = {
-  allPopularGame: [],
+  released: [],
   gameCount: null,
   currentPage: 1,
   gameLoading: true,
 };
 
-export const PopularGames = (state = initState, action) => {
+export const ReleasedGames = (state = initState, action) => {
   switch (action.type) {
-    case "POPULAR_GAMES": {
+    case "RELEASED_GAMES": {
       return {
         ...state,
-        allPopularGame: action.payload.popular,
+        released: action.payload.releasedGames,
         gameCount: action.payload.count,
         gameLoading: false,
       };
     }
-    case "IS_GAME_LOADING": {
+    case "GAME_LOADING": {
       return {
         ...state,
         gameLoading: true,

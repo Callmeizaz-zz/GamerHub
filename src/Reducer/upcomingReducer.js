@@ -1,24 +1,18 @@
 const initState = {
-  allPopularGame: [],
+  upcomingGames: [],
   gameCount: null,
   currentPage: 1,
-  gameLoading: true,
+  isGameLoading: true,
 };
 
-export const PopularGames = (state = initState, action) => {
+export const UpcomingGames = (state = initState, action) => {
   switch (action.type) {
-    case "POPULAR_GAMES": {
+    case "UPCOMING_GAMES": {
       return {
         ...state,
-        allPopularGame: action.payload.popular,
+        upcomingGames: action.payload.upcoming,
         gameCount: action.payload.count,
-        gameLoading: false,
-      };
-    }
-    case "IS_GAME_LOADING": {
-      return {
-        ...state,
-        gameLoading: true,
+        isGameLoading: false,
       };
     }
     case "NEXT_PAGE": {

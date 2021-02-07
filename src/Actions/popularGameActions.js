@@ -26,9 +26,3 @@ export const PrevPage = () => (dispatch) => {
     type: "PREV_PAGE",
   });
 };
-
-export const ResetPage = () => (disptach) => {
-  disptach({
-    type: "RESET_PAGE",
-  });
-};

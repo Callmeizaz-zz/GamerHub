@@ -5,17 +5,17 @@ import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { Button } from "../Styles/SharedStyles";
 //REDUX and ROUTER
 import {
-  AllPopularGame,
+  AllReleasedGames,
   NextPage,
   PrevPage,
-} from "../Actions/popularGameActions";
+} from "../Actions/releasedGameAction";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useHistory } from "react-router-dom";
 //COMPONENTS
 import Game from "./games";
 import GameDetail from "./gameDetail";
 
-const PopularGames = ({ match }) => {
+const ReleasedGames = () => {
   //GETTNG PATH
   const Location = useLocation();
   const History = useHistory();
@@ -23,8 +23,8 @@ const PopularGames = ({ match }) => {
   const Ref = useRef(true);
 
   //Redux store
-  const { allPopularGame, gameCount, currentPage, gameLoading } = useSelector(
-    (state) => state.popular
+  const { released, gameCount, currentPage, gameLoading } = useSelector(
+    (state) => state.released
   );
   //No of pages
   const totalPage = Math.ceil(gameCount / 36);
@@ -40,7 +40,7 @@ const PopularGames = ({ match }) => {
       return;
     } else {
       dispatch(PrevPage());
-      History.push(`/popular/games?page=${currentPage - 1}`);
+      History.push(`/released/games?page=${currentPage - 1}`);
     }
   };
 
@@ -50,7 +50,7 @@ const PopularGames = ({ match }) => {
       return;
     } else {
       dispatch(NextPage());
-      History.push(`/popular/games?page=${currentPage + 1}`);
+      History.push(`/released/games?page=${currentPage + 1}`);
     }
   };
   //Fetch all popular games
@@ -61,7 +61,7 @@ const PopularGames = ({ match }) => {
       Ref.current = false;
     } else {
       async function fetchGames(page) {
-        const games = dispatch(AllPopularGame(page));
+        const games = dispatch(AllReleasedGames(page));
         return games;
       }
 
@@ -72,7 +72,7 @@ const PopularGames = ({ match }) => {
   // {`${currentPage} /popular/games/${popularGames.id}`}
   return (
     <Popular>
-      <h2>Popular Games </h2>
+      <h2>Released Games </h2>
       <p>Total results: {gameCount}</p>
       <AnimateSharedLayout type="crossfade">
         <AnimatePresence>
@@ -82,18 +82,18 @@ const PopularGames = ({ match }) => {
           <h2>Loading</h2>
         ) : (
           <Games>
-            {allPopularGame.map((popularGames) => (
+            {released.map((releasedGames) => (
               <Link
-                to={`/popular/games/${currentPage}/${popularGames.id}`}
-                key={popularGames.id}
+                to={`/released/games/${currentPage}/${releasedGames.id}`}
+                key={releasedGames.id}
               >
                 <Game
-                  name={popularGames.name}
-                  img={popularGames.background_image}
-                  rating={popularGames.rating}
-                  id={popularGames.id}
-                  key={popularGames.id}
-                  released={popularGames.released}
+                  name={releasedGames.name}
+                  img={releasedGames.background_image}
+                  rating={releasedGames.rating}
+                  id={releasedGames.id}
+                  key={releasedGames.id}
+                  released={releasedGames.released}
                 />
               </Link>
             ))}
@@ -143,4 +143,4 @@ const Page = styled(motion.div)`
   }
 `;
 
-export default PopularGames;
+export default ReleasedGames;

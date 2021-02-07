@@ -1,14 +1,17 @@
 import React from "react";
 //Import Components
-import Nav from "../src/Components/navBar";
+import Nav from "./Components/navBar";
 //IMPORT PAGES
-import Home from "../src/Pages/Home";
-import SearchedResults from "../src/Pages/Searched";
-import PopularGame from "../src/Pages/Popular";
+import Home from "./Pages/Home";
+import SearchedResults from "./Pages/Searched";
+import PopularGame from "./Pages/Popular";
+import Upcoming from "./Pages/Upcoming";
+import Released from "./Pages/Released";
 //Global styles
-import GlobalStyles from "../src/Styles/GlobalStyles";
+import GlobalStyles from "./Styles/GlobalStyles";
 //Router
 import { Route, Switch, useLocation } from "react-router-dom";
+
 function App() {
   const Location = useLocation();
   return (
@@ -24,6 +27,12 @@ function App() {
         </Route>
         <Route path="/popular/games">
           <PopularGame />
+        </Route>
+        <Route path="/upcoming/games">
+          <Upcoming />
+        </Route>
+        <Route path="/released/games">
+          <Released />
         </Route>
       </Switch>
     </div>

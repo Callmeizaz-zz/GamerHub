@@ -37,6 +37,10 @@ const GameDetail = ({ pathId, curPage }) => {
           return History.push(`/search?=${searchInput}`);
         case "popular":
           return History.push(`/popular/games?page=${curPage}`);
+        case "upcoming":
+          return History.push(`/upcoming/games?page=${curPage}`);
+        case "released":
+          return History.push(`/released/games?page=${curPage}`);
         default:
           return History.push("/");
       }
